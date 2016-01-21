@@ -4,50 +4,82 @@ namespace KKiernan;
 
 class CaesarCipher
 {
-    protected static $alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    /**
+     * Encrypt a message using the Caesar Cipher.
+     *
+     * @param string $message
+     * @param integer $key
+     *
+     * @return string
+     */
+    public function encrypt($message, $key)
+    {
+        return $this->runAlgorithm($message, $key);
+    }
 
-    public static function encrypt($string, $key)
+    /**
+     * Decrypt a Caesar Cipher encrypted message.
+     *
+     * @param string $message
+     * @param integer $key
+     *
+     * @return string
+     */
+    public function decrypt($message, $key)
+    {
+        return $this->runAlgorithm($message, $key, true);
+    }
+
+    /**
+     * Run the encryption algorithm.
+     *
+     * @param bool $reverse
+     *
+     * @return void
+     */
+    private function runAlgorithm($message, $key, $reverse = false)
     {
         $ciphertext = '';
 
-        $key = $key > 25 ? $key % 25 : $key;
+        if ($reverse) {
+            $key = -$key;
+        }
 
-        foreach (str_split($string) as $char) {
-            if (!in_array($char, static::$alphabet)) {
-                $ciphertext .= $char;
-                continue;
-            }
-
-            $index = array_search($char, static::$alphabet);
-            $shifted = ($index + $key) % 25 != 0 ? (($index + $key) % 25) - 1 : 25;
-            $ciphertext .= static::$alphabet[$shifted];
+        foreach (str_split($message) as $char) {
+            $ciphertext .= $this->shiftCharacter($char, $key);
         }
 
         return $ciphertext;
     }
 
-    public static function decrypt($string, $key)
+    /**
+     * Shift a character by the given number of places. Note that we are using 
+     * a basic interpretation of the Caesar Cipher shifting only lower case 
+     * characters a through z. All other characters will be unchanged.
+     *
+     * @param string $char
+     * @param integer $shift
+     *
+     * @return string
+     */
+    public function shiftCharacter($char, $shift)
     {
-        $plaintext = '';
+        $ascii = ord(strtolower($char));
 
-        $key = $key > 25 ? $key % 25 : $key;
-
-        foreach (str_split($string) as $char) {
-            if (!in_array($char, static::$alphabet)) {
-                $plaintext .= $char;
-                continue;
-            }
-
-            // $index = array_search($char, static::$alphabet);
-            // $shifted = $index - $key;
-            // $shifted = $shifted < 0 ? (26 + $shifted) : $shifted;
-            // $plaintext .= static::$alphabet[$shifted];
-            
-            $index = array_search($char, static::$alphabet);
-            $shifted = ($index - $key) > 0 ? $index - $key : 26 - $key;
-            $plaintext .= static::$alphabet[$shifted];
+        if ($ascii > 122 || $ascii < 97) {
+            return $char;
         }
 
-        return $plaintext;
+        $shifted = $ascii + $shift;
+
+        if ($shifted > 122) {
+            $shifted = ($shifted - 122) + 96;
+        }
+
+        if ($shifted < 97) {
+            $shifted = 123 - (97 - $shifted);
+        }
+
+        return chr($shifted);
     }
 }
