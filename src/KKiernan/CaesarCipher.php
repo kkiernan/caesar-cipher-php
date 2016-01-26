@@ -5,6 +5,11 @@ namespace KKiernan;
 class CaesarCipher
 {
     /**
+     * Code readability helper.
+     */
+    const IN_REVERSE = true;
+
+    /**
      * Encrypt a message using the Caesar Cipher.
      *
      * @param string $message
@@ -27,7 +32,7 @@ class CaesarCipher
      */
     public function decrypt($message, $key)
     {
-        return $this->runAlgorithm($message, $key, true);
+        return $this->runAlgorithm($message, $key, self::IN_REVERSE);
     }
 
     /**
@@ -64,22 +69,31 @@ class CaesarCipher
      */
     public function shiftCharacter($char, $shift)
     {
-        $ascii = ord(strtolower($char));
+        // Use the remainder for shifts of 26 or more.
+        $shift = $shift % 25;
 
-        if ($ascii > 122 || $ascii < 97) {
+        // Get the ascii code for the given character.
+        $asciiCode = ord(strtolower($char));
+
+        // If character is not within a to z, return the original character.
+        if ($asciiCode > 122 || $asciiCode < 97) {
             return $char;
         }
 
-        $shifted = $ascii + $shift;
+        // Get the shifted ascii code.
+        $shiftedAsciiCode = $asciiCode + $shift;
 
-        if ($shifted > 122) {
-            $shifted = ($shifted - 122) + 96;
+        // If character is greater than z, wrap to the start of the alphabet.
+        if ($shiftedAsciiCode > 122) {
+            $shiftedAsciiCode = ($shiftedAsciiCode - 122) + 96;
         }
 
-        if ($shifted < 97) {
-            $shifted = 123 - (97 - $shifted);
+        // If character is less than a, wrap to end of alphabet.
+        if ($shiftedAsciiCode < 97) {
+            $shiftedAsciiCode = 123 - (97 - $shiftedAsciiCode);
         }
 
-        return chr($shifted);
+        // Return the shifted character.
+        return chr($shiftedAsciiCode);
     }
 }

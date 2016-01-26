@@ -43,4 +43,10 @@ class CaesarCipherSpec extends ObjectBehavior
         $this->decrypt('aol xbpjr mve qbtwz vcly aol shgf kvn', 7)
              ->shouldReturn('the quick fox jumps over the lazy dog');
     }
+
+    function it_handles_keys_larger_than_25_correctly() {
+        $this->encrypt('abc', 26)->shouldReturn('bcd');
+        $this->encrypt('abc', 52)->shouldReturn('cde');
+        $this->encrypt('abc', 101)->shouldReturn('bcd');
+    }
 }
