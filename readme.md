@@ -1,6 +1,6 @@
 # Caesar Cipher in PHP
 
-A basic Caesar Cipher class in PHP.
+A basic Caesar Cipher class in PHP. For fun.
 
 ## TODO
 
