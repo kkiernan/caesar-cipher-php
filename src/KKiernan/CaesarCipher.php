@@ -10,39 +10,39 @@ class CaesarCipher
     const IN_REVERSE = true;
 
     /**
-     * Encrypt a message using the Caesar Cipher.
+     * Encrypts a message using the Caesar Cipher.
      *
      * @param string $message
      * @param integer $key
      *
      * @return string
      */
-    public function encrypt($message, $key)
+    public function encrypt($message, $key = 12)
     {
-        return $this->runAlgorithm($message, $key);
+        return $this->run($message, $key);
     }
 
     /**
-     * Decrypt a Caesar Cipher encrypted message.
+     * Decrypts a Caesar Cipher encrypted message.
      *
      * @param string $message
      * @param integer $key
      *
      * @return string
      */
-    public function decrypt($message, $key)
+    public function decrypt($message, $key = 12)
     {
-        return $this->runAlgorithm($message, $key, self::IN_REVERSE);
+        return $this->run($message, $key, self::IN_REVERSE);
     }
 
     /**
-     * Run the encryption algorithm.
+     * Runs the algorithm to encrypt or decrypt the plaintext.
      *
      * @param bool $reverse
      *
      * @return void
      */
-    private function runAlgorithm($message, $key, $reverse = false)
+    protected function run($message, $key, $reverse = false)
     {
         $ciphertext = '';
 
@@ -51,49 +51,82 @@ class CaesarCipher
         }
 
         foreach (str_split($message) as $char) {
-            $ciphertext .= $this->shiftCharacter($char, $key);
+            $ciphertext .= $this->shift($char, $key);
         }
 
         return $ciphertext;
     }
 
     /**
-     * Shift a character by the given number of places. Note that we are using 
-     * a basic interpretation of the Caesar Cipher shifting only lower case 
-     * characters a through z. All other characters will be unchanged.
+     * Handles requests to shift a character by the given number of places.
      *
      * @param string $char
      * @param integer $shift
      *
      * @return string
      */
-    public function shiftCharacter($char, $shift)
+    protected function shift($char, $shift)
     {
-        // Use the remainder for shifts of 26 or more.
         $shift = $shift % 25;
+        $ascii = ord($char);
+        $shifted = $ascii + $shift;
 
-        // Get the ascii code for the given character.
-        $asciiCode = ord(strtolower($char));
-
-        // If character is not within a to z, return the original character.
-        if ($asciiCode > 122 || $asciiCode < 97) {
-            return $char;
+        if ($ascii >= 65 && $ascii <= 90) {
+            return chr($this->wrapUppercase($shifted));
         }
 
-        // Get the shifted ascii code.
-        $shiftedAsciiCode = $asciiCode + $shift;
-
-        // If character is greater than z, wrap to the start of the alphabet.
-        if ($shiftedAsciiCode > 122) {
-            $shiftedAsciiCode = ($shiftedAsciiCode - 122) + 96;
+        if ($ascii >= 97 && $ascii <= 122) {
+            return chr($this->wrapLowercase($shifted));
         }
 
-        // If character is less than a, wrap to end of alphabet.
-        if ($shiftedAsciiCode < 97) {
-            $shiftedAsciiCode = 123 - (97 - $shiftedAsciiCode);
+        return chr($ascii);
+    }
+
+    /**
+     * Ensures uppercase characters outside the range of A-Z are wrapped to 
+     * the start or end of the alphabet as needed.
+     *
+     * @param int $ascii
+     *
+     * @return int
+     */
+    protected function wrapUppercase($ascii)
+    {
+        // Handle character code that is less than A.
+        if ($ascii < 65) {
+            $ascii = 91 - (65 - $ascii);
+        }
+        
+        // Handle character code that is greater than Z.
+        if ($ascii > 90) {
+            $ascii = ($ascii - 90) + 64;
         }
 
-        // Return the shifted character.
-        return chr($shiftedAsciiCode);
+        // Return unchanged character code.
+        return $ascii;
+    }
+
+    /**
+     * Ensures lowercase characters outside the range of a-z are wrapped to 
+     * the start or end of the alphabet as needed.
+     *
+     * @param int $ascii
+     *
+     * @return int
+     */
+    protected function wrapLowercase($ascii)
+    {
+        // Handle character code that is less than a.
+        if ($ascii < 97) {
+            $ascii = 123 - (97 - $ascii);
+        }
+
+        // Handle character code that is greater than z.
+        if ($ascii > 122) {
+            $ascii = ($ascii - 122) + 96;
+        }
+
+        // Return unchanged character code.
+        return $ascii;
     }
 }

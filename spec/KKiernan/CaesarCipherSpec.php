@@ -12,29 +12,13 @@ class CaesarCipherSpec extends ObjectBehavior
         $this->shouldHaveType('KKiernan\CaesarCipher');
     }
 
-    function it_should_substitute_b_for_a_with_key_of_1()
-    {
-        $this->shiftCharacter('a', 1)->shouldReturn('b');
-    }
-
-    function it_should_substitute_c_for_a_with_key_of_2()
-    {
-        $this->shiftCharacter('a', 2)->shouldReturn('c');
-    }
-
-    function it_should_substitute_a_for_z_with_key_of_1()
-    {
-        $this->shiftCharacter('z', 1)->shouldReturn('a');
-    }
-
-    function it_should_substitute_a_for_y_with_key_of_2()
-    {
-        $this->shiftCharacter('y', 2)->shouldReturn('a');
-    }
-
     function it_encrypts_messages()
     {
-        $this->encrypt('The quick fox jumps over the lazy dog', 7)
+        $this->encrypt('abc', 1)->shouldReturn('bcd');
+
+        $this->encrypt('ABC', 1)->shouldReturn('BCD');
+
+        $this->encrypt('the quick fox jumps over the lazy dog', 7)
              ->shouldReturn('aol xbpjr mve qbtwz vcly aol shgf kvn');
     }
 
@@ -48,5 +32,10 @@ class CaesarCipherSpec extends ObjectBehavior
         $this->encrypt('abc', 26)->shouldReturn('bcd');
         $this->encrypt('abc', 52)->shouldReturn('cde');
         $this->encrypt('abc', 101)->shouldReturn('bcd');
+    }
+
+    function it_encrypts_a_message_with_uppercase_letters() {
+        $this->encrypt('This is a Message', 6)
+             ->shouldReturn('Znoy oy g Skyygmk');
     }
 }
