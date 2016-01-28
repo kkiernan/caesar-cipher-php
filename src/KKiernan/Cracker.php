@@ -2,7 +2,7 @@
 
 namespace KKiernan;
 
-class Analyzer
+class Cracker
 {
     /**
      * Determines the frequency (as a percentage) that the given character 
@@ -21,7 +21,7 @@ class Analyzer
 
         $occurences = substr_count($string, $character);
 
-        return round($occurences / $stringLength, 2);
+        return round($occurences / $stringLength, 3);
     }
 
     /**
@@ -34,6 +34,28 @@ class Analyzer
     public function characters($string)
     {
         return array_values(array_unique(str_split(strtolower($this->cleanString($string)))));
+    }
+
+    /**
+     * Determines the frequency analysis for a string.
+     *
+     * @param string $string
+     *
+     * @return array
+     */
+    public function frequencyAnalysis($string)
+    {
+        $characters = $this->characters($string);
+
+        $frequencies = [];
+
+        foreach ($characters as $character) {
+            $frequencies[$character] = $this->characterFrequency($character, $string);
+        }
+
+        ksort($frequencies);
+
+        return $frequencies;
     }
 
     /**

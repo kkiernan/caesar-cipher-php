@@ -5,22 +5,9 @@ namespace KKiernan;
 class CaesarCipher
 {
     /**
-     * @var Analyzer
-     */
-    private $analyzer;
-
-    /**
      * Code readability helper.
      */
     const IN_REVERSE = true;
-
-    /**
-     * Create a new caesar cipher instance.
-     */
-    public function __construct()
-    {
-        $this->analyzer = new Analyzer();
-    }
 
     /**
      * Encrypts a message using the Caesar Cipher.
@@ -49,27 +36,23 @@ class CaesarCipher
     }
 
     /**
-     * Determines the frequency analysis for a string.
+     * Attempts to brute force the key.
      *
-     * @param string $string
+     * @param string $ciphertext
      *
-     * @return array
+     * @return int
      */
-    public function frequencyAnalysis($string)
+    public function crack($ciphertext)
     {
-        $characters = $this->analyzer->characters($string);
-
         $frequencies = [];
 
-        foreach ($characters as $character) {
-            $frequencies[$character] = $this->analyzer->characterFrequency($character, $string);
+        for ($i = 0; $i < 26; $i++) {
+            $plaintext = $this->decrypt($ciphertext, $i);
+
+            $frequencies[$i] = substr_count(strtolower($plaintext), 'e');
         }
 
-        ksort($frequencies);
-
-        print_r($frequencies);
-
-        return $frequencies;
+        return array_search(max($frequencies), $frequencies);
     }
 
     /**
