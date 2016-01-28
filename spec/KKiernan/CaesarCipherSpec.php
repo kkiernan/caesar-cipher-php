@@ -2,6 +2,7 @@
 
 namespace spec\KKiernan;
 
+use KKiernan\Analyzer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -37,5 +38,36 @@ class CaesarCipherSpec extends ObjectBehavior
     function it_encrypts_a_message_with_uppercase_letters() {
         $this->encrypt('This is a Message', 6)
              ->shouldReturn('Znoy oy g Skyygmk');
+    }
+
+    function it_gets_the_frequency_analysis_for_an_encrypted_message()
+    {
+        $this->frequencyAnalysis('e e e a')->shouldReturn(['a' => 0.25, 'e' => 0.75]);
+
+        $this->frequencyAnalysis('Encrypted text is sometimes achieved by replacing one letter by another. To start deciphering the encryption it is useful to get a frequency count of all the letters.')
+             ->shouldReturn([
+                'a' => 0.04,
+                'b' => 0.01,
+                'c' => 0.05,
+                'd' => 0.02,
+                'e' => 0.01,
+                'f' => 0.02,
+                'g' => 0.02,
+                'h' => 0.03,
+                'i' => 0.06,
+                'l' => 0.04,
+                'm' => 0.01,
+                'n' => 0.06,
+                'o' => 0.05,
+                'p' => 0.02,
+                'q' => 0.00,
+                'r' => 0.06,
+                's' => 0.05,
+                't' => 0.01,
+                'u' => 0.02,
+                'v' => 0.00,
+                'x' => 0.00,
+                'y' => 0.03,
+             ]);
     }
 }

@@ -5,9 +5,22 @@ namespace KKiernan;
 class CaesarCipher
 {
     /**
+     * @var Analyzer
+     */
+    private $analyzer;
+
+    /**
      * Code readability helper.
      */
     const IN_REVERSE = true;
+
+    /**
+     * Create a new caesar cipher instance.
+     */
+    public function __construct()
+    {
+        $this->analyzer = new Analyzer();
+    }
 
     /**
      * Encrypts a message using the Caesar Cipher.
@@ -33,6 +46,30 @@ class CaesarCipher
     public function decrypt($message, $key = 12)
     {
         return $this->run($message, $key, self::IN_REVERSE);
+    }
+
+    /**
+     * Determines the frequency analysis for a string.
+     *
+     * @param string $string
+     *
+     * @return array
+     */
+    public function frequencyAnalysis($string)
+    {
+        $characters = $this->analyzer->characters($string);
+
+        $frequencies = [];
+
+        foreach ($characters as $character) {
+            $frequencies[$character] = $this->analyzer->characterFrequency($character, $string);
+        }
+
+        ksort($frequencies);
+
+        print_r($frequencies);
+
+        return $frequencies;
     }
 
     /**
