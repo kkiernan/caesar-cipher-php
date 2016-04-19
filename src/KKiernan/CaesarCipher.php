@@ -8,7 +8,7 @@ class CaesarCipher
      * Encrypts a plaintext using the Caesar Cipher.
      *
      * @param string $plaintext
-     * @param integer $key
+     * @param int    $key
      *
      * @return string
      */
@@ -21,7 +21,7 @@ class CaesarCipher
      * Decrypts a Caesar Cipher encrypted ciphertext.
      *
      * @param string $ciphertext
-     * @param integer $key
+     * @param int    $key
      *
      * @return string
      */
@@ -31,8 +31,8 @@ class CaesarCipher
     }
 
     /**
-     * Attempts to brute force the key. This is using an extremely simplified 
-     * version of frequency analysis. We are just looking for the most 
+     * Attempts to brute force the key. This is using an extremely simplified
+     * version of frequency analysis. We are just looking for the most
      * frequently used character and assuming it is the letter e.
      *
      * @param string $ciphertext
@@ -52,7 +52,7 @@ class CaesarCipher
 
     /**
      * Runs the algorithm to encrypt or decrypt the given string.
-     * 
+     *
      * @return void
      */
     protected function run($string, $key)
@@ -66,7 +66,7 @@ class CaesarCipher
      * Handles requests to shift a character by the given number of places.
      *
      * @param string $char
-     * @param integer $shift
+     * @param int    $shift
      *
      * @return string
      */
@@ -88,7 +88,7 @@ class CaesarCipher
     }
 
     /**
-     * Ensures uppercase characters outside the range of A-Z are wrapped to 
+     * Ensures uppercase characters outside the range of A-Z are wrapped to
      * the start or end of the alphabet as needed.
      *
      * @param int $ascii
@@ -101,7 +101,7 @@ class CaesarCipher
         if ($ascii < 65) {
             $ascii = 91 - (65 - $ascii);
         }
-        
+
         // Handle character code that is greater than Z.
         if ($ascii > 90) {
             $ascii = ($ascii - 90) + 64;
@@ -112,7 +112,7 @@ class CaesarCipher
     }
 
     /**
-     * Ensures lowercase characters outside the range of a-z are wrapped to 
+     * Ensures lowercase characters outside the range of a-z are wrapped to
      * the start or end of the alphabet as needed.
      *
      * @param int $ascii

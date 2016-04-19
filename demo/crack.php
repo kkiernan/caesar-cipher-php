@@ -2,7 +2,7 @@
 
 use KKiernan\CaesarCipher;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__).'/vendor/autoload.php';
 
 $cipher = new CaesarCipher();
 
@@ -16,17 +16,17 @@ Only this, and nothing more.';
 $ciphertext = $cipher->encrypt($plaintext, 6);
 
 echo "ENCRYPTED MESSAGE:\n"
-     . "------------------\n"
-     . $ciphertext
-     . "\n\n";
+     ."------------------\n"
+     .$ciphertext
+     ."\n\n";
 
 $keyGuess = $cipher->crack($ciphertext);
 
 echo "BEST GUESS AT KEY:\n"
-     . "------------------\n"
-     . $keyGuess
-     . "\n\n";
+     ."------------------\n"
+     .$keyGuess
+     ."\n\n";
 
 echo "CRACKED MESSAGE ATTEMPT:\n"
-     . "------------------------\n"
-     . $cipher->decrypt($ciphertext, $keyGuess);
+     ."------------------------\n"
+     .$cipher->decrypt($ciphertext, $keyGuess);

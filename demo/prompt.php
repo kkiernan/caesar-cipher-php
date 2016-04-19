@@ -2,7 +2,7 @@
 
 use KKiernan\CaesarCipher;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__).'/vendor/autoload.php';
 
 $continue = true;
 
@@ -14,7 +14,8 @@ $cipher = new CaesarCipher();
 |---------------------------------------------------------------------
 */
 
-function encrypt() {
+function encrypt()
+{
     global $cipher;
 
     echo 'Enter a message: ';
@@ -24,7 +25,7 @@ function encrypt() {
     $key = fgets(STDIN);
 
     echo "Your encrypted message:\n";
-    echo $cipher->encrypt($plaintext, $key) . "\n";
+    echo $cipher->encrypt($plaintext, $key)."\n";
 }
 
 /*
@@ -33,7 +34,8 @@ function encrypt() {
 |---------------------------------------------------------------------
 */
 
-function crack() {
+function crack()
+{
     global $cipher;
 
     echo 'Enter an encrypted message: ';
@@ -41,7 +43,7 @@ function crack() {
 
     $key = $cipher->crack($ciphertext);
 
-    echo "\n" . $cipher->decrypt($ciphertext, $key);
+    echo "\n".$cipher->decrypt($ciphertext, $key);
 }
 
 /*
@@ -66,7 +68,7 @@ while ($continue) {
 
         case 3:
             $continue = false;
-            echo "Goodbye!";
+            echo 'Goodbye!';
             break;
 
         default:
