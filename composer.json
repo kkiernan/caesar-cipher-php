@@ -1,4 +1,7 @@
 {
+    "name": "kkiernan/caesar-cipher",
+    "license": "MIT",
+    "description": "Encrypt, decrypt and crack messages using the simple Caesar Cipher.",
     "require": {
         "phpspec/phpspec": "^2.4"
     },
