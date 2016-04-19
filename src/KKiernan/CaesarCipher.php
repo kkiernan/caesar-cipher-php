@@ -5,38 +5,35 @@ namespace KKiernan;
 class CaesarCipher
 {
     /**
-     * Code readability helper.
-     */
-    const IN_REVERSE = true;
-
-    /**
-     * Encrypts a message using the Caesar Cipher.
+     * Encrypts a plaintext using the Caesar Cipher.
      *
-     * @param string $message
+     * @param string $plaintext
      * @param integer $key
      *
      * @return string
      */
-    public function encrypt($message, $key = 12)
+    public function encrypt($plaintext, $key = 12)
     {
-        return $this->run($message, $key);
+        return $this->run($plaintext, $key);
     }
 
     /**
-     * Decrypts a Caesar Cipher encrypted message.
+     * Decrypts a Caesar Cipher encrypted ciphertext.
      *
-     * @param string $message
+     * @param string $ciphertext
      * @param integer $key
      *
      * @return string
      */
-    public function decrypt($message, $key = 12)
+    public function decrypt($ciphertext, $key = -12)
     {
-        return $this->run($message, $key, self::IN_REVERSE);
+        return $this->run($ciphertext, -$key);
     }
 
     /**
-     * Attempts to brute force the key.
+     * Attempts to brute force the key. This is using an extremely simplified 
+     * version of frequency analysis. We are just looking for the most 
+     * frequently used character and assuming it is the letter e.
      *
      * @param string $ciphertext
      *
@@ -44,37 +41,25 @@ class CaesarCipher
      */
     public function crack($ciphertext)
     {
-        $frequencies = [];
+        $plaintexts = [];
 
-        for ($i = 0; $i < 26; $i++) {
-            $plaintext = $this->decrypt($ciphertext, $i);
-
-            $frequencies[$i] = substr_count(strtolower($plaintext), 'e');
+        foreach (range(0, 25) as $key) {
+            $plaintexts[$key] = substr_count(strtolower($this->decrypt($ciphertext, $key)), 'e');
         }
 
-        return array_search(max($frequencies), $frequencies);
+        return array_search(max($plaintexts), $plaintexts);
     }
 
     /**
-     * Runs the algorithm to encrypt or decrypt the plaintext.
-     *
-     * @param bool $reverse
-     *
+     * Runs the algorithm to encrypt or decrypt the given string.
+     * 
      * @return void
      */
-    protected function run($message, $key, $reverse = false)
+    protected function run($string, $key)
     {
-        $ciphertext = '';
-
-        if ($reverse) {
-            $key = -$key;
-        }
-
-        foreach (str_split($message) as $char) {
-            $ciphertext .= $this->shift($char, $key);
-        }
-
-        return $ciphertext;
+        return implode(array_map(function ($char) use ($key) {
+            return $this->shift($char, $key);
+        }, str_split($string)), '');
     }
 
     /**

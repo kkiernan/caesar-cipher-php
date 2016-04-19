@@ -1,35 +1,35 @@
 # Caesar Cipher in PHP
 
-A basic Caesar Cipher class in PHP. For fun.
+A basic Caesar Cipher class in PHP. For fun and learning.
 
 ## Download
 
-Just clone or fork the repo to play around with the code. Add it to your project wherever appropriate and configure your autoloader if needed.
+Clone or fork the repo to play around with the code. Add it to your project wherever appropriate and either configure your autoloader or require the class in your code.
 
 ## Usage
 
-1. Create a new Caesar Cipher instance. Make sure to import the class.
-    ```
-    use KKiernan\CaesarCipher;
-    ```
+1. Create a new `CaesarCipher` instance. Make sure to import the class.
 
     ```
-    $cipher = new CaesarCipher;
+    $cipher = new KKiernan\CaesarCipher;
     ```
 
-2. Pass it a message to encrypt and a key to use. In a Caesar Cipher, the key is just the number of letters to shift.
+2. Pass the `CaesarCipher` instance a plaintext and a key. In a Caesar Cipher, the key is just the number of places to shift each letter in the plaintext.
 
     ```
-    $encryptedMessage = $cipher->encrypt('Hello Cipher', 8);
+    $ciphertext = $cipher->encrypt('This is a plain text message that will be encrypted!', 8);
     ```
 
-3. To decrypt your message, use the `decrypt` method. Pass it the encrypted message and the key that was used for encryption. Or brute-force it. It's terribly easy since there's only 25 possible keys.
+3. To decrypt your ciphertext, use the `decrypt` method on the `CaesarCipher` instance. Pass in the ciphertext and the key that was used for encryption.
 
     ```
-    $decryptedMessage = $cipher->decrypt($encryptedMessage, 8);
-```
+    $plaintext = $cipher->decrypt($ciphertext, 8);
+    ```
 
-## TODO
+4. You can attempt to crack an encrypted message by using the `crack` method, which will return a best guess for the key's value. Use the key to retrieve the plaintext.
 
-- [X] Add support for uppercase letters
-- [X] Write test for large key numbers (26+)
+    ```
+    $key = $cipher->crack('Max wtrl tkx zxmmbgz lahkm tztbg.');
+
+    $plaintext = $this->decrypt($ciphertext, $key);
+    ```

@@ -39,4 +39,20 @@ class CaesarCipherSpec extends ObjectBehavior
         $this->encrypt('This is a Message', 6)
              ->shouldReturn('Znoy oy g Skyygmk');
     }
+
+    function it_attempts_to_brute_force_the_correct_key() {
+        $plaintext = 'The days are getting short again.
+            Leaves fall from the trees.
+            Nights are haunted by howling winds.
+            Harbingers of the freeze.';
+
+        $ciphertext = 'Max wtrl tkx zxmmbgz lahkm tztbg.
+            Extoxl ytee ykhf max mkxxl.
+            Gbzaml tkx atngmxw ur ahpebgz pbgwl.
+            Atkubgzxkl hy max ykxxsx.';
+
+        $this->crack($ciphertext)->shouldReturn(19);
+
+        $this->decrypt($ciphertext, 19)->shouldReturn($plaintext);
+    }
 }
