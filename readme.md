@@ -2,6 +2,9 @@
 
 A basic Caesar Cipher class in PHP for fun and learning.
 
+[![Build Status](https://travis-ci.org/kkiernan/caesar-cipher-php.svg?branch=master)](https://travis-ci.org/kkiernan/caesar-cipher-php)
+[![Style Status](https://styleci.io/repos/50455710/shield)](https://styleci.io/repos/50455710)
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
