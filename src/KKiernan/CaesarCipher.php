@@ -53,13 +53,13 @@ class CaesarCipher
     /**
      * Runs the algorithm to encrypt or decrypt the given string.
      *
-     * @return void
+     * @return string
      */
     protected function run($string, $key)
     {
-        return implode(array_map(function ($char) use ($key) {
+        return implode('', array_map(function ($char) use ($key) {
             return $this->shift($char, $key);
-        }, str_split($string)), '');
+        }, str_split($string)));
     }
 
     /**
